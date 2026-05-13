@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+
+interface Props {
+  error?: unknown;
+}
+
+const { error } = Astro.props;
+
+if (error instanceof Error) {
+  console.error(error.message);
+}
+// En un entorno SSR real, esto correría en el servidor.
+// Para SSG, esta página se genera en tiempo de compilación.
+---
+
+<BaseLayout title="Error interno del servidor">
+  <main
+    class="grid min-h-screen place-items-center px-6 py-24 sm:py-32 lg:px-8"
+  >
+    <div class="text-center">
+      <p class="text-base font-semibold text-red-600 dark:text-red-400">500</p>
+      <h1
+        class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
+      >
+        Error interno del servidor
+      </h1>
+      <p class="mt-6 text-base leading-7 text-gray-600 dark:text-gray-400">
+        Algo salió mal de nuestro lado. Por favor, inténtalo de nuevo más tarde.
+      </p>
+      <div class="mt-10 flex items-center justify-center gap-x-6">
+        <Button href="/">Volver al inicio</Button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Hook de Telemetría para el cliente -->
+  <script>
+    // Inicializar SDK de observabilidad aquí si es necesario
+    // window.onerror = function(message, source, lineno, colno, error) { ... }
+  </script>
+</BaseLayout>

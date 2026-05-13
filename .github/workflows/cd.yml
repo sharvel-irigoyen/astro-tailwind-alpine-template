@@ -1,0 +1,34 @@
+name: CD Pipeline (Deploy to Production)
+
+on:
+  push:
+    branches: ['main', 'master']
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    
+    # Solo ejecutar si el pipeline de CI pasa exitosamente
+    # Si están en archivos separados, se asume que si llega a main es porque pasó.
+    # En proyectos grandes, puedes usar "workflow_run" para condicionarlo estrictamente.
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Opcional si el servidor requiere un puerto distinto: port: ${{ secrets.SERVER_PORT }}
+          script: |
+            # 1. Navegar a la ruta del proyecto en el servidor
+            cd /var/www/astro-tailwind-alpine-template || exit 1
+            
+            # 2. Descargar los últimos cambios (Asegura estar en la rama correcta)
+            git checkout master
+            git pull origin master
+            
+            # 3. Ejecutar el script centralizado de despliegue (DRY)
+            chmod +x deploy.sh
+            ./deploy.sh

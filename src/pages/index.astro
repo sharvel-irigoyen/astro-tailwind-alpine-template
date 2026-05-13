@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout title="Astro + Tailwind + Alpine Template">
+  <main class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="space-y-8 text-center">
+      <h1
+        class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl dark:text-white"
+      >
+        Template <span class="text-blue-600">Astro</span> + Tailwind + Alpine
+      </h1>
+
+      <p class="mx-auto max-w-2xl text-xl text-gray-500 dark:text-gray-400">
+        Una base sólida con arquitectura de ingeniería para empezar proyectos
+        rápidos, seguros y escalables.
+      </p>
+
+      <!-- Componente Alpine extraído y limpio -->
+      <div
+        x-data="counter"
+        class="mx-auto mt-10 max-w-sm rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-800"
+      >
+        <h2 class="mb-4 text-lg font-medium text-gray-900 dark:text-white">
+          Alpine.js Counter (Lógica Extraída)
+        </h2>
+        <div class="flex items-center justify-center space-x-4">
+          <Button variant="outline" @click="decrement" aria-label="Disminuir"
+            >-</Button
+          >
+          <span
+            class="text-2xl font-bold text-gray-900 dark:text-white"
+            x-text="count">0</span
+          >
+          <Button variant="outline" @click="increment" aria-label="Aumentar"
+            >+</Button
+          >
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
