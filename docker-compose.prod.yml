@@ -1,5 +1,6 @@
 services:
   astro-web:
+    image: astro-web-prod:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -7,11 +8,17 @@ services:
     restart: unless-stopped
     ports:
       - '8080:80'
+    volumes:
+      - astro_web_data:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     environment:
       - NODE_ENV=production
-      # - API_URL=https://api.production.com # Fallará el build (fail-fast) si Astro requiere esto y no está presente
     # resources constraints recomendados
     deploy:
       resources:
         limits:
           memory: 128M
+
+volumes:
+  astro_web_data:
+    name: astro_web_data
