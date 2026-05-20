@@ -35,6 +35,9 @@ jobs:
       - name: Run Formatting Check
         run: pnpm exec prettier --check .
 
+      - name: Run Type Check
+        run: pnpm exec astro check
+
       - name: Build Astro Project
         run: pnpm run build
 

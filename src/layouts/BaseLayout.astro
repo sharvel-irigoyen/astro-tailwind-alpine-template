@@ -5,15 +5,18 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  ogImage?: string;
 }
 
 const {
   title = 'Astro + Tailwind + Alpine Template',
   description = 'Plantilla base optimizada para proyectos con Astro, Tailwind CSS y Alpine.js',
   noindex = false,
+  ogImage = '/og-image.png',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site).href;
 ---
 
 <!doctype html>
@@ -51,6 +54,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content={ogImageURL} />
+    <meta
+      property="og:site_name"
+      content="Astro + Tailwind + Alpine Template"
+    />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
 
     <!-- Preload de fuentes: agregar una linea por cada fuente critica
     <link rel="preload" href="/fonts/mi-fuente.woff2" as="font" type="font/woff2" crossorigin />
