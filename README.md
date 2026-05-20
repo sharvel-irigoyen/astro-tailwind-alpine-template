@@ -51,7 +51,7 @@ Este repositorio es una plantilla base (Starter Template) optimizada para inicia
 
 ## 🐳 Despliegue en Producción (Docker)
 
-La infraestructura está definida como código para que cualquier despliegue (local o en un VPS/Cloud) sea idéntico e inmutable. Para levantar el entorno completo de producción con Nginx, simplemente ejecuta el script de despliegue:
+La infraestructura está definida como código para que cualquier despliegue (local o en un VPS/Cloud) sea idéntico e inmutable, logrando **Cero Caídas (Zero Downtime)** para el usuario final. Para levantar y actualizar el entorno de producción con Nginx, ejecuta el script de despliegue:
 
 ```bash
 ./deploy.sh
@@ -59,9 +59,11 @@ La infraestructura está definida como código para que cualquier despliegue (lo
 
 **¿Qué hace `deploy.sh`?**
 
-1. Reconstruye la imagen Docker multi-stage omitiendo la caché local de compilación.
-2. Reinicia los servicios de producción sin tiempo de inactividad visible.
-3. Purga imágenes colgantes (Dangling images) para ahorrar espacio en disco.
+1. **Construcción Eficiente:** Compila una nueva versión de la imagen Docker en segundo plano, aprovechando al máximo la caché para evitar reinstalar dependencias (`pnpm install`) si estas no han cambiado.
+2. **Asegurar Disponibilidad:** Garantiza que el contenedor del servidor Nginx (`astro_template_prod`) esté en ejecución.
+3. **Sincronización en Caliente:** Copia de forma atómica los nuevos archivos compilados directamente en el volumen compartido (`astro_web_data`), reemplazando la versión antigua instantáneamente en el disco sin detener el servicio.
+4. **Recarga Dinámica:** Ejecuta `nginx -s reload` en caliente dentro del contenedor para aplicar cambios en `nginx.conf` sin causar downtime.
+5. **Limpieza de Recursos:** Purga imágenes colgantes (Dangling images) para optimizar el almacenamiento del servidor.
 
 ---
 
@@ -120,4 +122,9 @@ const user = await safeFetch('https://api.ejemplo.com/user/1', UserSchema);
 
 ### 3. Observabilidad e Instrumentación
 
-La integración de Sentry capturar de manera temprana Core Web Vitals, excepciones no controladas y fallas lógicas de hidratación en Alpine.js. La página de error `500.astro` actúa puramente como una herramienta liviana de UX de contingencia, exenta de scripts externos pesados para garantizar su disponibilidad aun cuando los servicios de red fallen.
+La integración de Sentry captura de manera temprana Core Web Vitals, excepciones no controladas y fallas lógicas de hidratación en Alpine.js. La página de error `500.astro` actúa puramente como una herramienta liviana de UX de contingencia, exenta de scripts externos pesados para garantizar su disponibilidad aun cuando los servicios de red fallen.
+
+Para que Sentry funcione correctamente bajo una política de seguridad estricta, el archivo `nginx/nginx.conf` define reglas CSP específicas:
+
+- `connect-src` para permitir conexiones salientes hacia los servidores de ingesta de Sentry (`*.ingest.sentry.io` y `*.ingest.de.sentry.io`).
+- `worker-src` configurado en `blob:` para permitir que Sentry ejecute Web Workers en segundo plano.
