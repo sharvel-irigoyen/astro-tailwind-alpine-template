@@ -15,7 +15,7 @@ if (error instanceof Error) {
 // Para SSG, esta página se genera en tiempo de compilación.
 ---
 
-<BaseLayout title="Error interno del servidor">
+<BaseLayout title="Error interno del servidor" noindex>
   <main
     class="grid min-h-screen place-items-center px-6 py-24 sm:py-32 lg:px-8"
   >
@@ -34,10 +34,4 @@ if (error instanceof Error) {
       </div>
     </div>
   </main>
-
-  <!-- Hook de Telemetría para el cliente -->
-  <script>
-    // Inicializar SDK de observabilidad aquí si es necesario
-    // window.onerror = function(message, source, lineno, colno, error) { ... }
-  </script>
 </BaseLayout>

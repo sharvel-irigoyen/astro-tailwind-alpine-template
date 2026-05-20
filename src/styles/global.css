@@ -1,1 +1,15 @@
 @import 'tailwindcss';
+
+/*
+ * Fuentes personalizadas: usar font-display: swap para evitar bloqueo de render.
+ * Colocar los archivos .woff2 en src/fonts/ para que Astro los procese con hash.
+ *
+ * Ejemplo:
+ * @font-face {
+ *   font-family: 'MiFuente';
+ *   src: url('../fonts/mi-fuente.woff2') format('woff2');
+ *   font-weight: 400;
+ *   font-style: normal;
+ *   font-display: swap;
+ * }
+ */

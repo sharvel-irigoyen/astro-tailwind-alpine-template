@@ -1,6 +1,8 @@
 ---
+import { Picture } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
+import heroImage from '../assets/placeholder-hero.png';
 ---
 
 <BaseLayout title="Astro + Tailwind + Alpine Template">
@@ -16,6 +18,18 @@ import Button from '../components/ui/Button.astro';
         Una base sólida con arquitectura de ingeniería para empezar proyectos
         rápidos, seguros y escalables.
       </p>
+
+      <!-- Picture: genera AVIF + WebP con fallback PNG para navegadores antiguos -->
+      <Picture
+        src={heroImage}
+        alt="Imagen hero de ejemplo"
+        class="mx-auto rounded-xl shadow-lg"
+        width={960}
+        quality={80}
+        formats={['avif', 'webp']}
+        fallbackFormat="png"
+        priority
+      />
 
       <!-- Componente Alpine extraído y limpio -->
       <div
