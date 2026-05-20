@@ -2,13 +2,19 @@ import type { Alpine } from 'alpinejs';
 import * as Sentry from '@sentry/browser';
 import counter from './counter';
 
-// Capturar errores internos de evaluación de Alpine.js
-document.addEventListener('alpine:init', () => {
-  window.addEventListener('error', (event) => {
-    if (event.filename && event.filename.includes('alpine')) {
-      Sentry.captureException(event.error);
-    }
-  });
+// Captura global de errores no controlados y envío a Sentry.
+// @sentry/astro ya captura excepciones automáticamente, pero este handler
+// garantiza cobertura explícita para errores que puedan originarse en Alpine.js,
+// ya que los archivos compilados de producción tienen nombres con hash
+// y no pueden filtrarse por nombre de archivo.
+window.addEventListener('error', (event) => {
+  if (event.error) {
+    Sentry.captureException(event.error);
+  }
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  Sentry.captureException(event.reason);
 });
 
 export default function (Alpine: Alpine) {

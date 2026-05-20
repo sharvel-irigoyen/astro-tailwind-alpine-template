@@ -1,17 +1,18 @@
 name: CD Pipeline (Deploy to Production)
 
 on:
-  push:
+  workflow_run:
+    workflows: ['CI Pipeline']
+    types: [completed]
     branches: ['main', 'master']
 
 jobs:
   deploy:
     name: Deploy to VPS
     runs-on: ubuntu-latest
-    
-    # Solo ejecutar si el pipeline de CI pasa exitosamente
-    # Si están en archivos separados, se asume que si llega a main es porque pasó.
-    # En proyectos grandes, puedes usar "workflow_run" para condicionarlo estrictamente.
+
+    # Solo ejecutar si el CI Pipeline terminó exitosamente
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Deploy via SSH
@@ -32,3 +33,4 @@ jobs:
             # 3. Ejecutar el script centralizado de despliegue (DRY)
             chmod +x deploy.sh
             ./deploy.sh
+
