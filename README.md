@@ -1,21 +1,22 @@
 # 🚀 Template Grado Ingeniería: Astro + Tailwind CSS + Alpine.js
 
-Este repositorio es una plantilla base (Starter Template) optimizada para iniciar proyectos web estáticos (SSG) de alto rendimiento, seguros, resilientes y escalables. Está diseñado aplicando estrictas buenas prácticas de ingeniería de software, arquitectura DRY, despliegues inmutables y herramientas de calidad continua.
+Este repositorio es una plantilla base (Starter Template) optimizada para iniciar proyectos web estáticos (SSG) de alto rendimiento, seguros, resilientes y escalables para múltiples PYMEs. Está diseñado aplicando estrictas buenas prácticas de ingeniería de software, arquitectura DRY, despliegues inmutables, herramientas de calidad continua y transiciones visuales premium.
+
+---
 
 ## ✨ Características Principales
 
 - **Framework Core:** [Astro 6](https://astro.build) (Configurado por defecto en modo Static Site Generation - SSG).
 - **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/) nativamente integrado a través de Vite.
+- **Sistema de Blog (Content Layer):** Integración con Astro Content Layer API (`src/content.config.ts`), esquemas de validación Zod y soporte de renderizado con `@tailwindcss/typography` (prose styling).
+- **CLI de Configuración (`setup.sh`):** CLI interactivo que permite parametrizar el negocio (nombre, colores, información de contacto) y limpiar datos demo automáticamente.
+- **Animaciones Premium (Motion):** Transiciones scroll-reveal de alto rendimiento mediante la API nativa de animaciones web (WAAPI), cargando de forma diferida (lazy load) la biblioteca `motion` sólo al intersectar elementos.
+- **Interactividad FAQ Pulida:** Acordeón de preguntas frecuentes implementado con transiciones nativas de CSS Grid (`grid-rows-[0fr] -> grid-rows-[1fr]`), eliminando parpadeos, aplicando estados activos premium y optimizando la indexación SEO.
 - **Reactividad Segura (CSP):** Uso de **`@alpinejs/csp`** para eliminar completamente la directiva `unsafe-eval` del CSP y mitigar ataques XSS. La lógica se aísla de forma obligatoria en controladores TypeScript (en `src/scripts/`) y se registra en el `entrypoint` centralizado de Alpine.
 - **Resiliencia en Red (Zod):** Cliente de peticiones seguro implementado a través de un wrapper genérico `safeFetch` que valida la respuesta de APIs externas en tiempo de ejecución usando esquemas de **Zod** (patrón Fail-Fast).
-- **Observabilidad Global (Sentry):** Monitoreo en tiempo real con `@sentry/astro` y `@sentry/browser`. Captura automática de Core Web Vitals, errores no controlados y promesas rechazadas mediante interceptores globales (`error` y `unhandledrejection`) en el entrypoint de Alpine.
-- **Seguridad HTTP Endurecida:** Cabeceras de seguridad estrictas en Nginx incluyendo **HSTS** (Strict-Transport-Security), **CSP**, **X-Frame-Options**, **X-Content-Type-Options**, **Referrer-Policy**, **Permissions-Policy** y **X-XSS-Protection**. Todas las cabeceras se redeclaran en los bloques `location` para prevenir el bug de herencia de Nginx.
-- **Infraestructura Agnóstica (Docker):** Contenedor multi-stage optimizado sobre Alpine Node y servido mediante un servidor **Nginx** de alto rendimiento con reglas estrictas de caché (activos con hash inmutables de 1 año), Gzip (nivel 6), healthcheck integrado y despliegues con **Cero Caídas (Zero Downtime)**.
-- **Calidad de Código y Git Hooks:**
-  - **ESLint** (Flat config recomendado para Astro/TS) y **Prettier** con ordenamiento de clases de Tailwind.
-  - **Husky** y **lint-staged** protegiendo cada commit.
-  - **Commitlint** forzando el estándar de _Conventional Commits_.
-- **CI/CD:** Pipelines de GitHub Actions (`ci.yml` y `cd.yml`) pre-configurados. El CD se ejecuta **únicamente** tras el éxito del CI mediante `workflow_run`.
+- **Observabilidad Global (Sentry):** Monitoreo en tiempo real con `@sentry/astro` y `@sentry/browser`. Captura automática de Core Web Vitals y errores no controlados.
+- **Seguridad HTTP Endurecida:** Cabeceras de seguridad estrictas en Nginx incluyendo **HSTS** (Strict-Transport-Security), **CSP**, **X-Frame-Options**, **X-Content-Type-Options** y **Referrer-Policy** redeclaradas en cada bloque `location` para prevenir el bug de herencia.
+- **Infraestructura Agnóstica (Docker):** Contenedor multi-stage optimizado sobre Alpine Node y servido mediante un servidor **Nginx** con reglas de caché (activos con hash inmutables de 1 año), Gzip (nivel 6), healthcheck integrado y despliegues con **Cero Caídas (Zero Downtime)**.
 
 ---
 
@@ -41,7 +42,7 @@ Este repositorio es una plantilla base (Starter Template) optimizada para inicia
    pnpm run dev
    ```
 
-   El proyecto estará disponible en `http://localhost:4321`.
+   El proyecto estará disponible en `http://localhost:4321` (desarrollo local Astro) o `http://localhost:8080` si se despliega el contenedor de producción.
 
 3. **Otros comandos útiles:**
    - `pnpm run lint`: Ejecuta el linter (ESLint).
@@ -50,9 +51,27 @@ Este repositorio es una plantilla base (Starter Template) optimizada para inicia
 
 ---
 
+## ⚙️ Inicialización de Nuevos Proyectos (CLI Setup)
+
+Para reusar este template en un nuevo proyecto PYME, ejecuta el asistente de configuración interactivo:
+
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+**¿Qué realiza el script de inicialización?**
+
+- **Variables de Marca:** Configura interactivamente el nombre comercial, tagline, teléfono, correo y dominio en `src/config/site.ts`.
+- **Diseño Cromático:** Modifica los colores de Tailwind (`primary`, `primary-hover`, `accent`) en `src/styles/global.css`.
+- **Ajustes de Infraestructura:** Configura la URL del sitio en `astro.config.mjs` para SEO y XML sitemaps.
+- **Limpieza del Blog:** Elimina los posts demo y reinicia el histórico de blog.
+
+---
+
 ## 🐳 Despliegue en Producción (Docker)
 
-La infraestructura está definida como código para que cualquier despliegue (local o en un VPS/Cloud) sea idéntico e inmutable, logrando **Cero Caídas (Zero Downtime)** para el usuario final. Para levantar y actualizar el entorno de producción con Nginx, ejecuta el script de despliegue:
+Para levantar y actualizar el entorno de producción con Nginx con **Cero Caídas (Zero Downtime)**, ejecuta el script de despliegue:
 
 ```bash
 ./deploy.sh
@@ -60,11 +79,10 @@ La infraestructura está definida como código para que cualquier despliegue (lo
 
 **¿Qué hace `deploy.sh`?**
 
-1. **Construcción Eficiente:** Compila una nueva versión de la imagen Docker en segundo plano, aprovechando al máximo la caché para evitar reinstalar dependencias (`pnpm install`) si estas no han cambiado.
-2. **Asegurar Disponibilidad:** Garantiza que el contenedor del servidor Nginx (`astro_template_prod`) esté en ejecución.
-3. **Sincronización en Caliente:** Copia de forma atómica los nuevos archivos compilados directamente en el volumen compartido (`astro_web_data`), reemplazando la versión antigua instantáneamente en el disco sin detener el servicio.
-4. **Recarga Dinámica:** Ejecuta `nginx -s reload` en caliente dentro del contenedor para aplicar cambios en `nginx.conf` sin causar downtime.
-5. **Limpieza de Recursos:** Purga imágenes colgantes (Dangling images) para optimizar el almacenamiento del servidor.
+1. **Construcción Eficiente:** Compila la nueva versión de la imagen Docker en segundo plano, aprovechando la caché.
+2. **Sincronización en Caliente:** Copia de forma atómica los archivos estáticos en el volumen compartido (`astro_web_data`), reemplazando la versión antigua en caliente sin detener el servicio.
+3. **Recarga Dinámica:** Ejecuta `nginx -s reload` para aplicar configuraciones de servidor sin downtime.
+4. **Limpieza de Recursos:** Purga imágenes colgantes para optimizar el almacenamiento.
 
 ---
 
@@ -74,66 +92,89 @@ La infraestructura está definida como código para que cualquier despliegue (lo
 /
 ├── .github/workflows/        # Pipelines CI/CD automatizados
 ├── nginx/
-│   └── nginx.conf            # Configuración de compresión, caché y CSP para Alpine CSP
+│   └── nginx.conf            # Configuración de caché, CSP, compresión y seguridad
 ├── src/
 │   ├── assets/               # Recursos multimedia estáticos optimizados
-│   ├── components/ui/        # Componentes DRY polimórficos (ej. Button.astro)
-│   ├── layouts/              # BaseLayout con soporte SEO global, OpenGraph y noindex condicional
-│   ├── pages/                # Rutas estáticas SSG (index, 404, 500)
-│   ├── scripts/              # Entrypoint, controladores Alpine (TS) y fetcher seguro
-│   └── styles/               # Directivas globales de Tailwind CSS v4
-├── .commitlintrc.mjs         # Reglas de Conventional Commits
-├── eslint.config.mjs         # Linter Flat config
+│   ├── components/           # Componentes modulares
+│   │   ├── layout/           # Estructura global (Header, Footer, CookieBanner)
+│   │   ├── primitives/       # Átomos DRY reutilizables (Button, SectionHeading)
+│   │   └── sections/         # Secciones modulares parametrizadas (Hero, Features, Services)
+│   ├── config/               # Archivos de configuración de negocio (site.ts)
+│   ├── content/              # Colecciones de contenido (blog posts)
+│   ├── data/                 # Data limpia y agnóstica para alimentar componentes
+│   ├── layouts/              # Plantillas base (BaseLayout, PageLayout)
+│   ├── pages/                # Rutas estáticas SSG (index, blog, nosotros, servicios, etc.)
+│   ├── scripts/              # Entrypoint y controladores Alpine (TS)
+│   │   ├── components/       # Lógica encapsulada de componentes UI
+│   │   └── utils/            # Utilidades generales (safeFetch, reveal)
+│   ├── styles/               # Directivas globales de Tailwind CSS v4
+│   └── types/                # Interfaces TypeScript tipadas de datos del negocio
 ├── Dockerfile                # Receta Docker multi-stage optimizada
-└── deploy.sh                 # Script CD de despliegue continuo
+├── setup.sh                  # Script CLI interactivo de inicialización de marca
+└── deploy.sh                 # Script CD de despliegue continuo cero caídas
 ```
 
 ---
 
 ## 🛡️ Pilares de Ingeniería del Proyecto
 
-### 1. Seguridad CSP (Content Security Policy)
+### 1. Animaciones Scroll-Reveal con Motion (WAAPI)
 
-Bajo la versión de `@alpinejs/csp`, **no** está permitido programar expresiones directas en el HTML, eliminando completamente la necesidad de `unsafe-eval` en la política CSP. Todo comportamiento reactivo debe ser extraído a métodos de clases y componentes registrados en `alpine-entrypoint.ts`. Por ejemplo:
+El sistema scroll-reveal dinámico evita saturar el hilo principal de la CPU importando la librería `motion` asíncronamente solo cuando el primer elemento entra al viewport:
 
 ```html
-<!-- INCORRECTO (Fallará bajo CSP): -->
-<button @click="count++">Incrementar</button>
+<!-- Se agrega la clase `.reveal` y atributos data para parametrizar la transición -->
+<div
+  class="reveal"
+  data-reveal-direction="left"
+  data-reveal-delay="0.1"
+  data-reveal-duration="0.8"
+>
+  Contenido animado
+</div>
+```
 
+- **Rendimiento:** Las animaciones se ejecutan en el hilo del compositor de la GPU, manteniendo el rendimiento en Lighthouse al 100%.
+- **Accesibilidad y Fallback:** Si JavaScript está desactivado, el diseño utiliza `.js .reveal` para mostrar todo el contenido inmediatamente y evitar FOUC. Respeta la preferencia `prefers-reduced-motion`.
+
+### 2. Acordeón FAQ Optimizado
+
+El componente de acordeón interactivo en `FAQ.astro` utiliza transiciones nativas de CSS Grid para modular su altura sin parpadeos:
+
+```html
+<div
+  class="grid transition-[grid-template-rows,opacity] duration-300 ease-in-out"
+  x-bind:class="isOpen(index) ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
+>
+  <div class="overflow-hidden">
+    <!-- Contenido de la Respuesta -->
+  </div>
+</div>
+```
+
+- **Ventaja SEO:** A diferencia de `x-show` o `v-if` tradicionales, el texto nunca sale del DOM (no se oculta con `display: none`), permitiendo a los buscadores indexar las respuestas siempre.
+
+### 3. Seguridad CSP (Content Security Policy)
+
+Bajo la versión de `@alpinejs/csp`, **no** está permitido programar expresiones directas en el HTML. Todo comportamiento reactivo debe ser extraído a métodos de clases y componentes en `src/scripts/components/`.
+
+```html
 <!-- CORRECTO: -->
 <button @click="increment">Incrementar</button>
 ```
 
-El servidor Nginx aplica cabeceras de seguridad endurecidas que incluyen **HSTS** (`Strict-Transport-Security`) para forzar HTTPS, y **redeclara todas las cabeceras en cada bloque `location`** para prevenir el [bug de herencia de Nginx](https://nginx.org/en/docs/http/ngx_http_headers_module.html#add_header) donde `add_header` en un bloque hijo anula las cabeceras del bloque padre.
+### 4. Resiliencia de APIs y Fail-Fast con Zod
 
-### 2. Resiliencia de APIs y Fail-Fast con Zod
-
-Al realizar integraciones externas, el template utiliza `safeFetch` (en `src/scripts/fetcher.ts`). Zod actúa como control de aduanas, invalidando la respuesta en tiempo de ejecución si el servidor envía datos inesperados, protegiendo así el estado del cliente de errores difíciles de diagnosticar.
+El wrapper seguro `safeFetch` valida las respuestas de red contra esquemas Zod antes de propagarlas:
 
 ```typescript
 import { z } from 'zod';
-import { safeFetch } from '../scripts/fetcher';
+import { safeFetch } from '../scripts/utils/fetcher';
 
-const UserSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-});
-
-// Validación en runtime + tipado estricto automático de TypeScript
+const UserSchema = z.object({ id: z.number(), name: z.string() });
 const user = await safeFetch('https://api.ejemplo.com/user/1', UserSchema);
 ```
 
-### 3. Observabilidad e Instrumentación
+### 5. Observabilidad con Sentry
 
-La integración de Sentry captura de manera temprana Core Web Vitals, excepciones no controladas y promesas rechazadas. El `alpine-entrypoint.ts` registra interceptores globales (`error` y `unhandledrejection`) que envían cualquier excepción a Sentry, independientemente de si se origina en Alpine.js u otro módulo. La página de error `500.astro` actúa puramente como una herramienta liviana de UX de contingencia, exenta de scripts externos pesados para garantizar su disponibilidad aun cuando los servicios de red fallen.
-
-Para que Sentry funcione correctamente bajo una política de seguridad estricta, el archivo `nginx/nginx.conf` define reglas CSP específicas:
-
-- `connect-src` para permitir conexiones salientes hacia los servidores de ingesta de Sentry (`*.ingest.sentry.io` y `*.ingest.de.sentry.io`).
-- `worker-src` configurado en `blob:` para permitir que Sentry ejecute Web Workers en segundo plano.
-
-### 4. Infraestructura Resiliente
-
-- **Docker Healthcheck:** El contenedor de producción ejecuta verificaciones periódicas con `wget` para confirmar que Nginx está sirviendo tráfico activamente. Si falla 3 veces consecutivas, Docker marca el contenedor como `unhealthy`.
-- **CI/CD Secuencial:** El pipeline de CD (`cd.yml`) se activa **exclusivamente** tras el éxito del CI (`ci.yml`) mediante `workflow_run`, evitando despliegues de código no validado.
-- **Zero Downtime:** Los despliegues sincronizan archivos estáticos en un volumen compartido y ejecutan `nginx -s reload` sin detener el contenedor.
+La integración de Sentry captura Core Web Vitals y excepciones no controladas. El entrypoint de Alpine registra interceptores globales (`error` y `unhandledrejection`) garantizando visibilidad completa ante incidentes en producción.
