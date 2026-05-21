@@ -1,0 +1,98 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { siteConfig } from '../config/site';
+
+const currentYear = new Date().getFullYear();
+---
+
+<PageLayout
+  title={`Política de Privacidad | ${siteConfig.name}`}
+  noindex={true}
+>
+  <main class="dark:bg-bg-dark bg-white py-16 sm:py-24">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h1
+        class="text-secondary text-3xl font-extrabold tracking-tight sm:text-4xl dark:text-white"
+      >
+        Política de Privacidad
+      </h1>
+      <p class="mt-2 text-sm text-slate-500">
+        Última actualización: Mayo de {currentYear}
+      </p>
+
+      <div
+        class="mt-8 space-y-6 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+      >
+        <p>
+          En <strong>{siteConfig.name}</strong>, valoramos tu privacidad y nos
+          comprometemos a proteger los datos personales que compartes con
+          nosotros. Esta Política de Privacidad describe cómo recopilamos,
+          utilizamos y salvaguardamos tu información cuando visitas nuestro
+          sitio web <strong>{siteConfig.url}</strong> o utilizas nuestro formulario
+          de contacto.
+        </p>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          1. Información que recopilamos
+        </h2>
+        <p>
+          Recopilamos información únicamente cuando decides escribirnos a través
+          del formulario de contacto. Los datos capturados son:
+        </p>
+        <ul class="list-disc space-y-2 pl-6">
+          <li>Nombre Completo</li>
+          <li>Dirección de correo electrónico</li>
+          <li>Número telefónico (opcional)</li>
+          <li>Mensaje o consulta detallada</li>
+        </ul>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          2. Uso de la información
+        </h2>
+        <p>
+          Utilizamos los datos recopilados exclusivamente para responder a tus
+          consultas comerciales, brindar asesoría, cotizaciones técnicas o
+          ponernos en contacto contigo para coordinar el inicio de proyectos. No
+          vendemos, alquilamos ni compartimos tus datos con terceros para fines
+          publicitarios.
+        </p>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          3. Procesamiento y Almacenamiento Seguro
+        </h2>
+        <p>
+          Los datos ingresados en el formulario viajan de forma encriptada
+          (HTTPS) directamente hacia nuestro webhook de procesamiento en <strong
+            >n8n</strong
+          >. Contamos con protocolos de seguridad para garantizar que la
+          información no sea expuesta ni interceptada por agentes maliciosos
+          externos.
+        </p>
+
+        <h2
+          id="cookies"
+          class="text-secondary pt-4 text-lg font-bold dark:text-white"
+        >
+          4. Política de Cookies
+        </h2>
+        <p>
+          Este sitio web utiliza cookies técnicas esenciales y cookies
+          analíticas para mejorar la navegación del usuario. Puedes revocar o
+          aceptar el uso de cookies en el banner interactivo. No rastreamos
+          datos personales sensibles a través de cookies de terceros.
+        </p>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          5. Derechos del Usuario
+        </h2>
+        <p>
+          Tienes derecho a acceder, rectificar o solicitar la eliminación total
+          de tus datos personales de nuestras bases de datos temporales. Puedes
+          solicitarlo escribiendo directamente a nuestro correo de contacto: <strong
+            >{siteConfig.contact.email}</strong
+          >.
+        </p>
+      </div>
+    </div>
+  </main>
+</PageLayout>

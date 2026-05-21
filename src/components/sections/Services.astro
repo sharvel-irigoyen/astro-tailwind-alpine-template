@@ -1,0 +1,110 @@
+---
+import type { ServiceItem } from '../../types';
+
+interface Props {
+  items: ServiceItem[];
+}
+
+const { items } = Astro.props;
+
+// Mapa de Iconos SVG para servicios
+const icons: Record<string, string> = {
+  web: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>`,
+  cart: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>`,
+  code: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>`,
+  search: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>`,
+};
+---
+
+<section class="bg-slate-50 py-20 dark:bg-slate-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Cabecera de Sección -->
+    <div
+      class="reveal mb-16 flex flex-col justify-between gap-4 md:flex-row md:items-end"
+      data-reveal-direction="up"
+      data-reveal-duration="0.8"
+    >
+      <div class="max-w-2xl">
+        <h2
+          class="text-primary dark:text-accent text-base font-semibold tracking-wider uppercase"
+        >
+          Nuestros Servicios
+        </h2>
+        <p
+          class="text-secondary mt-2 text-3xl font-extrabold sm:text-4xl dark:text-white"
+        >
+          Soluciones digitales para impulsar tus ventas
+        </p>
+      </div>
+      <div>
+        <a
+          href="/servicios/"
+          class="text-primary hover:text-primary-hover dark:text-accent inline-flex items-center text-sm font-semibold transition-colors dark:hover:text-amber-500"
+        >
+          Explorar todos los servicios
+          <svg
+            class="ml-1 h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Cuadrícula de Servicios -->
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+      {
+        items.map((service, index) => (
+          <div
+            class="reveal group flex flex-col gap-6 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all hover:shadow-md md:flex-row dark:border-slate-800 dark:bg-slate-900"
+            data-reveal-direction={index % 2 === 0 ? 'left' : 'right'}
+            data-reveal-delay={(index * 0.1).toFixed(2)}
+            data-reveal-duration="0.75"
+          >
+            {/* Icono Contenedor */}
+            <div class="bg-primary/10 text-primary dark:bg-primary/20 dark:text-accent flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl">
+              <Fragment set:html={icons[service.icon] || icons.web} />
+            </div>
+
+            <div class="flex-grow space-y-3">
+              <h3 class="text-secondary group-hover:text-primary dark:group-hover:text-accent text-xl font-bold transition-colors dark:text-white">
+                {service.title}
+              </h3>
+              <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {service.description}
+              </p>
+              <div>
+                <a
+                  href={`/servicios#${service.slug}`}
+                  class="hover:text-primary dark:hover:text-accent inline-flex items-center text-xs font-bold tracking-wider text-slate-700 uppercase transition-colors dark:text-slate-300"
+                >
+                  Saber más
+                  <svg
+                    class="ml-1 h-3.5 w-3.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2.5"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

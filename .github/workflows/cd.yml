@@ -25,12 +25,11 @@ jobs:
           script: |
             # 1. Navegar a la ruta del proyecto en el servidor
             cd /var/www/astro-tailwind-alpine-template || exit 1
-            
+
             # 2. Descargar los últimos cambios (Asegura estar en la rama correcta)
             git checkout master
             git pull origin master
-            
+
             # 3. Ejecutar el script centralizado de despliegue (DRY)
             chmod +x deploy.sh
             ./deploy.sh
-

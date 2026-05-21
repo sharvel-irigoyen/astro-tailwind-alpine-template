@@ -1,0 +1,37 @@
+---
+import Button from '../primitives/Button.astro';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  ctaHref: string;
+  variant?: 'primary' | 'secondary';
+}
+
+const {
+  title,
+  subtitle,
+  ctaText,
+  ctaHref,
+  variant = 'secondary',
+} = Astro.props;
+---
+
+<section
+  class="bg-primary border-primary-hover border-t border-b py-16 text-center text-white dark:border-slate-800 dark:bg-slate-900"
+>
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-extrabold sm:text-4xl">
+      {title}
+    </h2>
+    <p class="mt-4 text-lg text-slate-100 dark:text-slate-400">
+      {subtitle}
+    </p>
+    <div class="mt-8 flex justify-center gap-4">
+      <Button href={ctaHref} variant={variant}>
+        {ctaText}
+      </Button>
+    </div>
+  </div>
+</section>

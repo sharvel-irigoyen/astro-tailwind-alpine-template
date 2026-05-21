@@ -1,0 +1,179 @@
+---
+import { siteConfig } from '../../config/site';
+import ThemeToggle from '../primitives/ThemeToggle.astro';
+
+const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
+const currentPath = normalizePath(Astro.url.pathname);
+---
+
+<div x-data="navigationHeader" class="sticky top-0 z-40 w-full">
+  <header
+    class="dark:bg-bg-dark/80 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-md dark:border-slate-800/80"
+  >
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <!-- Logotipo / Nombre del Negocio -->
+        <div class="flex flex-shrink-0 items-center">
+          <a href="/" class="flex items-center space-x-2">
+            <!-- Logo Placeholder (puede ser reemplazado por un tag <img>) -->
+            <div
+              class="bg-primary flex h-8 w-8 items-center justify-center rounded-lg text-lg font-bold text-white"
+            >
+              {siteConfig.name.charAt(0)}
+            </div>
+            <span
+              class="text-secondary text-xl font-bold tracking-tight dark:text-white"
+            >
+              {siteConfig.name}
+            </span>
+          </a>
+        </div>
+
+        <!-- Navegación de Escritorio -->
+        <nav class="hidden space-x-8 md:flex">
+          {
+            siteConfig.navigation.header.map((item) => {
+              const isCurrent = normalizePath(item.href) === currentPath;
+              return (
+                <a
+                  href={item.href}
+                  class={
+                    isCurrent
+                      ? 'text-primary dark:text-primary text-sm font-semibold transition-colors'
+                      : 'hover:text-primary dark:hover:text-primary text-sm font-medium text-slate-600 transition-colors dark:text-slate-300'
+                  }
+                  aria-current={isCurrent ? 'page' : undefined}
+                >
+                  {item.name}
+                </a>
+              );
+            })
+          }
+        </nav>
+
+        <!-- Botones de Acción (Modo Oscuro + Contacto Rápido) -->
+        <div class="hidden items-center space-x-4 md:flex">
+          <ThemeToggle />
+
+          <a
+            href={siteConfig.contact.phoneLink}
+            class="bg-primary hover:bg-primary-hover inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:shadow"
+          >
+            Llamar ahora
+          </a>
+        </div>
+
+        <!-- Botón de Menú Móvil (Hamburguesa) -->
+        <div class="flex items-center space-x-2 md:hidden">
+          <ThemeToggle />
+
+          <button
+            x-on:click="toggleMenu"
+            class="inline-flex items-center justify-center rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700 focus:outline-none dark:text-slate-400 dark:hover:bg-slate-800"
+            aria-label="Abrir menú"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menú de Dispositivos Móviles (Drawer) -->
+  <div class="relative z-50 md:hidden" role="dialog" aria-modal="true">
+    <!-- Fondo translúcido con transición -->
+    <div
+      x-cloak
+      x-on:click="closeMenu"
+      x-bind:class="overlayClasses"
+      class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
+    >
+    </div>
+
+    <!-- Contenido del Menú Lateral -->
+    <div
+      x-cloak
+      x-bind:class="sidebarClasses"
+      class="dark:bg-bg-dark fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-white px-6 py-6 shadow-xl transition-transform duration-300 ease-in-out"
+    >
+      <div class="flex items-center justify-between">
+        <a href="/" class="flex items-center space-x-2">
+          <div
+            class="bg-primary flex h-8 w-8 items-center justify-center rounded-lg text-lg font-bold text-white"
+          >
+            {siteConfig.name.charAt(0)}
+          </div>
+          <span
+            class="text-secondary text-xl font-bold tracking-tight dark:text-white"
+          >
+            {siteConfig.name}
+          </span>
+        </a>
+        <button
+          x-on:click="closeMenu"
+          class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+          aria-label="Cerrar menú"
+        >
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="mt-8 flow-root">
+        <div class="-my-6 divide-y divide-slate-100 dark:divide-slate-800">
+          <div class="space-y-2 py-6">
+            {
+              siteConfig.navigation.header.map((item) => {
+                const isCurrent = normalizePath(item.href) === currentPath;
+                return (
+                  <a
+                    href={item.href}
+                    x-on:click="closeMenu"
+                    class={
+                      isCurrent
+                        ? 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary -mx-3 block rounded-lg px-3 py-2 text-base font-bold'
+                        : '-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-slate-900 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800/50'
+                    }
+                    aria-current={isCurrent ? 'page' : undefined}
+                  >
+                    {item.name}
+                  </a>
+                );
+              })
+            }
+          </div>
+          <div class="space-y-4 py-6">
+            <a
+              href={siteConfig.contact.phoneLink}
+              class="bg-primary hover:bg-primary-hover flex w-full items-center justify-center rounded-lg px-4 py-2.5 text-center text-sm font-semibold text-white shadow"
+            >
+              Llamar ahora
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,11 @@
 import type { Alpine } from 'alpinejs';
 import * as Sentry from '@sentry/browser';
-import counter from './counter';
+import counter from './components/counter';
+import theme from './components/theme';
+import faqAccordion from './components/faqAccordion';
+import cookieBanner from './components/cookieBanner';
+import navigationHeader from './components/navigationHeader';
+import contactForm from './components/contactForm';
 
 // Captura global de errores no controlados y envío a Sentry.
 // @sentry/astro ya captura excepciones automáticamente, pero este handler
@@ -20,4 +25,9 @@ window.addEventListener('unhandledrejection', (event) => {
 export default function (Alpine: Alpine) {
   // Registrar todos los componentes y stores extraídos aquí
   counter(Alpine);
+  theme(Alpine);
+  faqAccordion(Alpine);
+  cookieBanner(Alpine);
+  navigationHeader(Alpine);
+  contactForm(Alpine);
 }

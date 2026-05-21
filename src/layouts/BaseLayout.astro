@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+import { siteConfig } from '../config/site';
+import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -9,18 +12,24 @@ interface Props {
 }
 
 const {
-  title = 'Astro + Tailwind + Alpine Template',
-  description = 'Plantilla base optimizada para proyectos con Astro, Tailwind CSS y Alpine.js',
+  title = `${siteConfig.name} | ${siteConfig.tagline}`,
+  description = siteConfig.description,
   noindex = false,
   ogImage = '/og-image.png',
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL(ogImage, Astro.site).href;
+// Intentar usar Astro.site; si no está configurado, usar la URL de la configuración
+const siteUrl = Astro.site?.href || siteConfig.url;
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const ogImageURL = new URL(ogImage, siteUrl).href;
 ---
 
 <!doctype html>
-<html lang="es">
+<html
+  lang="es"
+  data-allow-toggle={siteConfig.theme.allowToggle.toString()}
+  data-default-mode={siteConfig.theme.defaultMode}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,7 +53,7 @@ const ogImageURL = new URL(ogImage, Astro.site).href;
     />
     <meta
       name="theme-color"
-      content="#111827"
+      content="#0f172a"
       media="(prefers-color-scheme: dark)"
     />
 
@@ -55,10 +64,7 @@ const ogImageURL = new URL(ogImage, Astro.site).href;
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:image" content={ogImageURL} />
-    <meta
-      property="og:site_name"
-      content="Astro + Tailwind + Alpine Template"
-    />
+    <meta property="og:site_name" content={siteConfig.name} />
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -66,15 +72,65 @@ const ogImageURL = new URL(ogImage, Astro.site).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
 
-    <!-- Preload de fuentes: agregar una linea por cada fuente critica
-    <link rel="preload" href="/fonts/mi-fuente.woff2" as="font" type="font/woff2" crossorigin />
-    -->
+    <!-- Astro View Transitions ClientRouter -->
+    <ClientRouter />
+
+    <!-- Script inline para evitar parpadeo de tema oscuro (FOUC) -->
+    <script is:inline>
+      const getTheme = () => {
+        const doc = document.documentElement;
+        const allowToggle = doc.getAttribute('data-allow-toggle') === 'true';
+        const defaultMode = doc.getAttribute('data-default-mode') || 'system';
+        if (!allowToggle) {
+          if (defaultMode === 'system') {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+          }
+          return defaultMode;
+        }
+        if (
+          typeof localStorage !== 'undefined' &&
+          localStorage.getItem('theme')
+        ) {
+          return localStorage.getItem('theme');
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+      };
+      const applyTheme = () => {
+        if (getTheme() === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      };
+      applyTheme();
+      document.addEventListener('astro:after-swap', applyTheme);
+
+      // Añadir clase JS inmediatamente en render
+      document.documentElement.classList.add('js');
+    </script>
+
+    <!-- Script de inicialización de animaciones de reveal -->
+    <script>
+      import { initReveal } from '../scripts/utils/reveal';
+
+      // Ejecutar en la carga inicial
+      initReveal();
+      // Ejecutar tras navegaciones con View Transitions
+      document.addEventListener('astro:page-load', initReveal);
+    </script>
+
+    <!-- Schema.org Local Business structured data -->
+    {!noindex && <LocalBusinessSchema />}
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
   <body
-    class="min-h-screen bg-gray-50 text-gray-900 antialiased selection:bg-blue-500 selection:text-white dark:bg-gray-900 dark:text-gray-100"
+    class="bg-bg-light selection:bg-primary dark:bg-bg-dark min-h-screen text-slate-800 antialiased selection:text-white dark:text-slate-100"
   >
     <slot />
   </body>

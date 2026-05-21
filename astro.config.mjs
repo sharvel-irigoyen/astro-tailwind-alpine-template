@@ -17,9 +17,9 @@ export default defineConfig({
     plugins: [tailwindcss()],
     resolve: {
       alias: {
-        'alpinejs': '@alpinejs/csp'
-      }
-    }
+        alpinejs: '@alpinejs/csp',
+      },
+    },
   },
 
   integrations: [
@@ -28,7 +28,9 @@ export default defineConfig({
     }),
     sitemap(),
     sentry({
-      dsn: process.env.PUBLIC_SENTRY_DSN || 'https://examplePublicKey@o0.ingest.sentry.io/0',
+      dsn:
+        process.env.PUBLIC_SENTRY_DSN ||
+        'https://examplePublicKey@o0.ingest.sentry.io/0',
       sourceMapsUploadOptions: {
         project: 'my-project',
         authToken: process.env.SENTRY_AUTH_TOKEN,
@@ -44,6 +46,12 @@ export default defineConfig({
         access: 'public',
         optional: true,
         default: 'https://api.example.com',
+      }),
+      PUBLIC_N8N_WEBHOOK_URL: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+        default: 'https://n8n.example.com/webhook/contact',
       }),
     },
   },

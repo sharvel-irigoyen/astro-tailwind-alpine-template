@@ -1,0 +1,94 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { siteConfig } from '../config/site';
+
+const currentYear = new Date().getFullYear();
+---
+
+<PageLayout
+  title={`Aviso Legal y Términos de Uso | ${siteConfig.name}`}
+  noindex={true}
+>
+  <main class="dark:bg-bg-dark bg-white py-16 sm:py-24">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h1
+        class="text-secondary text-3xl font-extrabold tracking-tight sm:text-4xl dark:text-white"
+      >
+        Términos de Uso y Aviso Legal
+      </h1>
+      <p class="mt-2 text-sm text-slate-500">
+        Última actualización: Mayo de {currentYear}
+      </p>
+
+      <div
+        class="mt-8 space-y-6 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+      >
+        <p>
+          Bienvenido al sitio web de <strong>{siteConfig.name}</strong>. Al
+          acceder o utilizar este sitio web (<strong>{siteConfig.url}</strong>),
+          aceptas cumplir con los siguientes Términos y Condiciones de Uso y
+          toda la legislación local aplicable.
+        </p>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          1. Identidad de la Empresa
+        </h2>
+        <p>
+          En cumplimiento con las normativas locales de transparencia comercial
+          y comercio electrónico, informamos los datos del titular del sitio:
+        </p>
+        <ul class="list-disc space-y-2 pl-6">
+          <li><strong>Titular Comercial:</strong> {siteConfig.name}</li>
+          <li><strong>Dirección:</strong> {siteConfig.contact.address}</li>
+          <li>
+            <strong>Email de Contacto:</strong>
+            {siteConfig.contact.email}
+          </li>
+          <li><strong>Teléfono:</strong> {siteConfig.contact.phone}</li>
+        </ul>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          2. Propiedad Intelectual
+        </h2>
+        <p>
+          Todo el contenido de este sitio web, incluyendo textos, gráficos,
+          logotipos, iconos, código fuente y configuraciones de diseño, es
+          propiedad intelectual de <strong>{siteConfig.name}</strong> o de sus respectivos
+          licenciantes, estando protegido por leyes nacionales e internacionales de
+          derechos de autor. Queda prohibida la reproducción parcial o total sin autorización
+          expresa.
+        </p>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          3. Limitación de Responsabilidad
+        </h2>
+        <p>
+          <strong>{siteConfig.name}</strong> realiza el mayor esfuerzo para que toda
+          la información técnica, precios de referencia o contenidos mostrados sean
+          verídicos y actualizados. Sin embargo, no nos hacemos responsables de posibles
+          imprecisiones temporales, errores de redacción o la disponibilidad del servicio
+          del servidor web administrado por terceros (Cloudflare Pages).
+        </p>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          4. Enlaces Externos
+        </h2>
+        <p>
+          Este sitio web puede contener enlaces que redirigen a redes sociales
+          propias (Facebook, Instagram, LinkedIn, etc.) o servicios de Google
+          Maps. No ejercemos control sobre el contenido, políticas de privacidad
+          o prácticas de dichos sitios de terceros.
+        </p>
+
+        <h2 class="text-secondary pt-4 text-lg font-bold dark:text-white">
+          5. Ley Aplicable
+        </h2>
+        <p>
+          Cualquier reclamación relativa a este sitio web será regulada bajo la
+          jurisdicción de las leyes del país de operación fiscal de la empresa,
+          sin dar efecto a sus disposiciones sobre conflicto de leyes.
+        </p>
+      </div>
+    </div>
+  </main>
+</PageLayout>

@@ -1,0 +1,57 @@
+---
+import type { FeatureItem } from '../../types';
+import SectionHeading from '../primitives/SectionHeading.astro';
+
+interface Props {
+  items: FeatureItem[];
+}
+
+const { items } = Astro.props;
+
+// Mapa de Iconos SVG para mantenerse libre de dependencias
+const icons: Record<string, string> = {
+  speed: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`,
+  seo: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>`,
+  mobile: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>`,
+  shield: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>`,
+};
+---
+
+<section class="dark:bg-bg-dark bg-white py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal" data-reveal-direction="up" data-reveal-duration="0.8">
+      <SectionHeading
+        eyebrow="¿Por qué elegirnos?"
+        title="Hacemos crecer tu PYME en el mundo digital"
+        description="Diseñamos sitios que combinan velocidad, usabilidad y optimización en motores de búsqueda para garantizar el éxito de tu negocio."
+      />
+    </div>
+
+    <!-- Cuadrícula de Tarjetas -->
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        items.map((feature, index) => (
+          <div
+            class="reveal group relative rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+            data-reveal-direction="up"
+            data-reveal-delay={(index * 0.15).toFixed(2)}
+            data-reveal-duration="0.7"
+          >
+            {/* Contenedor del Icono con Gradiente en Hover */}
+            <div class="bg-primary/10 text-primary dark:bg-primary/20 dark:text-accent group-hover:bg-primary flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover:text-white dark:group-hover:text-white">
+              <Fragment set:html={icons[feature.icon] || icons.speed} />
+            </div>
+
+            <h3 class="text-secondary mt-4 text-lg font-bold dark:text-white">
+              {feature.title}
+            </h3>
+
+            <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              {feature.description}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

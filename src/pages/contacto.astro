@@ -1,0 +1,160 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import ContactForm from '../components/sections/ContactForm.astro';
+import { siteConfig } from '../config/site';
+---
+
+<PageLayout
+  title={`Contacto | ${siteConfig.name}`}
+  description={`Ponte en contacto con el equipo comercial de ${siteConfig.name}. Escríbenos o llámanos para recibir una cotización gratuita.`}
+>
+  <main class="dark:bg-bg-dark bg-slate-50 py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Encabezado de Página -->
+      <div class="mx-auto mb-16 max-w-3xl text-center">
+        <h1
+          class="text-secondary text-4xl font-extrabold tracking-tight sm:text-5xl dark:text-white"
+        >
+          Contacta con nosotros
+        </h1>
+        <p class="mt-4 text-lg text-slate-600 dark:text-slate-400">
+          ¿Tienes una idea de proyecto, necesitas optimizar tu presencia en
+          buscadores o digitalizar tus procesos de negocio? Escríbenos y te
+          responderemos a la brevedad.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
+        <!-- Columna Izquierda: Información de Negocio -->
+        <div class="space-y-8">
+          <div
+            class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            <h2 class="text-secondary mb-6 text-xl font-bold dark:text-white">
+              Información Comercial
+            </h2>
+
+            <ul class="space-y-6 text-sm text-slate-600 dark:text-slate-400">
+              <li class="flex items-start space-x-3">
+                <svg
+                  class="text-primary h-6 w-6 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <div>
+                  <span
+                    class="text-secondary block font-semibold dark:text-white"
+                    >Dirección Física</span
+                  >
+                  <a
+                    href={siteConfig.contact.addressLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="hover:text-primary text-xs transition-colors"
+                  >
+                    {siteConfig.contact.address}
+                  </a>
+                </div>
+              </li>
+
+              <li class="flex items-start space-x-3">
+                <svg
+                  class="text-primary h-6 w-6 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  ></path>
+                </svg>
+                <div>
+                  <span
+                    class="text-secondary block font-semibold dark:text-white"
+                    >Central Telefónica</span
+                  >
+                  <a
+                    href={siteConfig.contact.phoneLink}
+                    class="hover:text-primary text-xs transition-colors"
+                  >
+                    {siteConfig.contact.phone}
+                  </a>
+                </div>
+              </li>
+
+              <li class="flex items-start space-x-3">
+                <svg
+                  class="text-primary h-6 w-6 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  ></path>
+                </svg>
+                <div>
+                  <span
+                    class="text-secondary block font-semibold dark:text-white"
+                    >Correo Electrónico</span
+                  >
+                  <a
+                    href={`mailto:${siteConfig.contact.email}`}
+                    class="hover:text-primary text-xs transition-colors"
+                  >
+                    {siteConfig.contact.email}
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Horarios de Atención -->
+          <div
+            class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            <h2 class="text-secondary mb-4 text-xl font-bold dark:text-white">
+              Horarios de Atención
+            </h2>
+            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+              {
+                siteConfig.contact.hours.map((hour) => (
+                  <li class="flex justify-between border-b border-slate-100 py-2 last:border-0 dark:border-slate-800">
+                    <span>{hour.split(':')[0]}</span>
+                    <span class="text-secondary font-medium dark:text-white">
+                      {hour.split(':').slice(1).join(':').trim()}
+                    </span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Formulario -->
+        <div class="flex justify-center">
+          <ContactForm />
+        </div>
+      </div>
+    </div>
+  </main>
+</PageLayout>

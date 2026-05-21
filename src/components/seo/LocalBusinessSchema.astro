@@ -1,0 +1,31 @@
+---
+import { siteConfig } from '../../config/site';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: siteConfig.name,
+  description: siteConfig.description,
+  url: siteConfig.url,
+  logo: new URL('/logo.png', siteConfig.url).href,
+  image: new URL('/og-image.png', siteConfig.url).href,
+  telephone: siteConfig.contact.phone,
+  email: siteConfig.contact.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: siteConfig.contact.address,
+    addressLocality: 'Lima', // Valor por defecto ajustable o extraído del string
+    addressCountry: 'PE', // Ajustable según país de la PYME
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: siteConfig.contact.latitude,
+    longitude: siteConfig.contact.longitude,
+  },
+  url_map: siteConfig.contact.addressLink,
+  openingHours: ['Mo-Fr 09:00-18:00', 'Sa 09:00-13:00'],
+  sameAs: Object.values(siteConfig.socials).filter(Boolean),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

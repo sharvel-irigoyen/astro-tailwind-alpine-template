@@ -1,15 +1,118 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
-/*
- * Fuentes personalizadas: usar font-display: swap para evitar bloqueo de render.
- * Colocar los archivos .woff2 en src/fonts/ para que Astro los procese con hash.
- *
- * Ejemplo:
- * @font-face {
- *   font-family: 'MiFuente';
- *   src: url('../fonts/mi-fuente.woff2') format('woff2');
- *   font-weight: 400;
- *   font-style: normal;
- *   font-display: swap;
- * }
- */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Paleta cromática corporativa por defecto (azul premium y neutros) */
+  --primary: #2563eb; /* bg-blue-600 */
+  --primary-hover: #1d4ed8; /* bg-blue-700 */
+  --secondary: #0f172a; /* bg-slate-900 */
+  --accent: #f59e0b; /* bg-amber-500 */
+  --accent-hover: #d97706; /* bg-amber-600 */
+
+  --bg-light: #f9fafb; /* gray-50 */
+  --bg-dark: #0f172a; /* slate-900 */
+
+  --card-light: #ffffff;
+  --card-dark: #1e293b; /* slate-800 */
+}
+
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+
+  --color-bg-light: var(--bg-light);
+  --color-bg-dark: var(--bg-dark);
+
+  --color-card-light: var(--card-light);
+  --color-card-dark: var(--card-dark);
+}
+
+@layer base {
+  /* Transiciones globales suaves para cambios de tema claro/oscuro */
+  *,
+  *::before,
+  *::after {
+    transition-property:
+      background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Personalización premium de la barra de desplazamiento */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 5px;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+}
+
+/* Quitar animaciones en caso de accesibilidad (fuera de layer, usa !important) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: scroll !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* Soporte para x-cloak de Alpine.js (fuera de layer para máxima prioridad) */
+[x-cloak] {
+  display: none !important;
+}
+
+/* Animación de entrada optimizada con Motion */
+.js .reveal {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}

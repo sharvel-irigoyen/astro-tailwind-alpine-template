@@ -1,0 +1,217 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<PageLayout
+  title={`Nosotros | ${siteConfig.name}`}
+  description={`Conoce la historia, misión, visión y valores de ${siteConfig.name}. Nos dedicamos a impulsar PYMEs mediante software de calidad.`}
+>
+  <main class="dark:bg-bg-dark bg-slate-50 py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Encabezado de Página -->
+      <div
+        class="reveal mx-auto mb-16 max-w-3xl text-center"
+        data-reveal-direction="up"
+        data-reveal-duration="0.8"
+      >
+        <h1
+          class="text-secondary text-4xl font-extrabold tracking-tight sm:text-5xl dark:text-white"
+        >
+          Nuestra Historia y Filosofía
+        </h1>
+        <p class="mt-4 text-lg text-slate-600 dark:text-slate-400">
+          En {siteConfig.name}, trabajamos para digitalizar a las pequeñas y
+          medianas empresas con la velocidad y estándares que antes solo eran
+          accesibles para grandes corporaciones.
+        </p>
+      </div>
+
+      <!-- Sección Historia -->
+      <div class="mb-24 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
+        <div
+          class="reveal space-y-6"
+          data-reveal-direction="left"
+          data-reveal-duration="0.8"
+        >
+          <h2 class="text-secondary text-2xl font-bold dark:text-white">
+            Cómo empezamos
+          </h2>
+          <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+            Nuestra empresa nació al ver la frustración de muchos empresarios
+            con sitios web lentos y difíciles de mantener, o agencias que
+            cobraban presupuestos exorbitantes por páginas lentas construidas
+            con plugins obsoletos.
+          </p>
+          <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+            Decidimos cambiar las reglas del juego: utilizar tecnologías
+            modernas de generación estática para crear sitios web rápidos como
+            el rayo, seguros y optimizados desde la base para aparecer en
+            Google. Esto reduce los costos de servidor a cero y multiplica las
+            conversiones de nuestros clientes.
+          </p>
+        </div>
+        <div
+          class="reveal bg-primary/10 border-primary/20 dark:bg-primary/5 dark:border-primary/10 relative rounded-2xl border p-8"
+          data-reveal-direction="right"
+          data-reveal-duration="0.8"
+          data-reveal-delay="0.15"
+        >
+          <span class="text-primary text-6xl font-bold">"</span>
+          <p
+            class="text-lg font-medium text-slate-700 italic dark:text-slate-300"
+          >
+            Nuestra meta no es solo entregar una página web bonita. Es entregar
+            una herramienta comercial que genere ventas recurrentes y represente
+            con orgullo la identidad de tu negocio.
+          </p>
+          <p class="text-primary mt-4 text-sm font-semibold">
+            — El Equipo de {siteConfig.name}
+          </p>
+        </div>
+      </div>
+
+      <!-- Misión & Visión -->
+      <div class="mb-24 grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div
+          class="reveal rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          data-reveal-direction="left"
+          data-reveal-duration="0.8"
+        >
+          <div
+            class="bg-primary/10 text-primary dark:bg-primary/20 dark:text-accent flex h-12 w-12 items-center justify-center rounded-xl"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-secondary mt-4 text-xl font-bold dark:text-white">
+            Nuestra Misión
+          </h3>
+          <p
+            class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+          >
+            Democratizar el acceso a software de alta calidad, velocidad y
+            seguridad para las pequeñas y medianas empresas de la región,
+            logrando un impacto real en su rentabilidad y presencia online.
+          </p>
+        </div>
+
+        <div
+          class="reveal rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          data-reveal-direction="right"
+          data-reveal-duration="0.8"
+          data-reveal-delay="0.1"
+        >
+          <div
+            class="bg-primary/10 text-primary dark:bg-primary/20 dark:text-accent flex h-12 w-12 items-center justify-center rounded-xl"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-secondary mt-4 text-xl font-bold dark:text-white">
+            Nuestra Visión
+          </h3>
+          <p
+            class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+          >
+            Ser la plantilla y plataforma base preferida por desarrolladores y
+            agencias para desplegar sitios webs corporativos a PYMEs con un
+            rendimiento impecable de 100/100 en Lighthouse y costos de
+            mantención eficientes.
+          </p>
+        </div>
+      </div>
+
+      <!-- Valores -->
+      <div class="mb-16 text-center">
+        <h2
+          class="reveal text-secondary text-3xl font-bold dark:text-white"
+          data-reveal-direction="up"
+          data-reveal-duration="0.8"
+        >
+          Nuestros Valores
+        </h2>
+        <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div
+            class="reveal rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"
+            data-reveal-direction="up"
+            data-reveal-delay="0.1"
+            data-reveal-duration="0.6"
+          >
+            <span class="text-primary dark:text-accent text-lg font-bold"
+              >Transparencia</span
+            >
+            <p class="mt-2 text-xs text-slate-500">
+              Explicamos todo de forma clara y sin tecnicismos complejos.
+            </p>
+          </div>
+          <div
+            class="reveal rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"
+            data-reveal-direction="up"
+            data-reveal-delay="0.2"
+            data-reveal-duration="0.6"
+          >
+            <span class="text-primary dark:text-accent text-lg font-bold"
+              >Velocidad</span
+            >
+            <p class="mt-2 text-xs text-slate-500">
+              Valoramos tu tiempo y el de tus usuarios finales.
+            </p>
+          </div>
+          <div
+            class="reveal rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"
+            data-reveal-direction="up"
+            data-reveal-delay="0.3"
+            data-reveal-duration="0.6"
+          >
+            <span class="text-primary dark:text-accent text-lg font-bold"
+              >Calidad</span
+            >
+            <p class="mt-2 text-xs text-slate-500">
+              Construimos código limpio, semántico y duradero.
+            </p>
+          </div>
+          <div
+            class="reveal rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"
+            data-reveal-direction="up"
+            data-reveal-delay="0.4"
+            data-reveal-duration="0.6"
+          >
+            <span class="text-primary dark:text-accent text-lg font-bold"
+              >Enfoque PYME</span
+            >
+            <p class="mt-2 text-xs text-slate-500">
+              Creamos pensando en el retorno de inversión comercial.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</PageLayout>
