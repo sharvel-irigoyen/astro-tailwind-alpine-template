@@ -30,6 +30,17 @@ read -rp "   Email de contacto: " EMAIL
 read -rp "   Teléfono (ej: +51 987 654 321): " PHONE
 read -rp "   Dirección física: " ADDRESS
 read -rp "   Número de WhatsApp sin '+' (ej: 51987654321): " WHATSAPP
+read -rp "   ¿Habilitar Cloudflare Turnstile anti-spam? (s/n): " ENABLE_TURNSTILE
+
+TURNSTILE_ENABLED="false"
+TURNSTILE_KEY="1x00000000000000000000AA"
+if [[ "$ENABLE_TURNSTILE" =~ ^[Ss]$ ]]; then
+  TURNSTILE_ENABLED="true"
+  read -rp "   Clave de Sitio (Site Key) de Turnstile (Enter para clave de prueba): " USER_KEY
+  if [ -n "$USER_KEY" ]; then
+    TURNSTILE_KEY="$USER_KEY"
+  fi
+fi
 
 echo ""
 echo -e "${YELLOW}🎨 Personalización${NC}"
@@ -52,6 +63,7 @@ EMAIL_ESC=$(escape_sed "$EMAIL")
 PHONE_ESC=$(escape_sed "$PHONE")
 ADDRESS_ESC=$(escape_sed "$ADDRESS")
 WHATSAPP_ESC=$(escape_sed "$WHATSAPP")
+TURNSTILE_KEY_ESC=$(escape_sed "$TURNSTILE_KEY")
 PRIMARY_ESC=$(escape_sed "$PRIMARY_COLOR")
 PRIMARY_HOVER_ESC=$(escape_sed "$PRIMARY_HOVER")
 
@@ -59,13 +71,15 @@ echo -e "${BLUE}⚙️  Aplicando configuración...${NC}"
 
 # --- Actualizar config/site.ts ---
 SITE_CONFIG="src/config/site.ts"
-sed -i "s/name: '.*'/name: '${BUSINESS_NAME_ESC}'/" "$SITE_CONFIG"
-sed -i "s/tagline: '.*'/tagline: '${TAGLINE_ESC}'/" "$SITE_CONFIG"
-sed -i "s|url: '.*'|url: '${SITE_URL_ESC}'|" "$SITE_CONFIG"
-sed -i "s/email: '.*'/email: '${EMAIL_ESC}'/" "$SITE_CONFIG"
-sed -i "s/phone: '.*'/phone: '${PHONE_ESC}'/" "$SITE_CONFIG"
-sed -i "s/address: '.*'/address: '${ADDRESS_ESC}'/" "$SITE_CONFIG"
-sed -i "s/whatsapp: '.*'/whatsapp: '${WHATSAPP_ESC}'/" "$SITE_CONFIG"
+sed -i "s/^  name: '.*'/  name: '${BUSINESS_NAME_ESC}'/" "$SITE_CONFIG"
+sed -i "s/^  tagline: '.*'/  tagline: '${TAGLINE_ESC}'/" "$SITE_CONFIG"
+sed -i "s|^  url: '.*'|  url: '${SITE_URL_ESC}'|" "$SITE_CONFIG"
+sed -i "s/    email: '.*'/    email: '${EMAIL_ESC}'/" "$SITE_CONFIG"
+sed -i "s/    phone: '.*'/    phone: '${PHONE_ESC}'/" "$SITE_CONFIG"
+sed -i "s/    address: '.*'/    address: '${ADDRESS_ESC}'/" "$SITE_CONFIG"
+sed -i "s/    whatsapp: '.*'/    whatsapp: '${WHATSAPP_ESC}'/" "$SITE_CONFIG"
+sed -i "s/    enabled: .*/    enabled: ${TURNSTILE_ENABLED},/" "$SITE_CONFIG"
+sed -i "s/    siteKey: '.*'/    siteKey: '${TURNSTILE_KEY_ESC}'/" "$SITE_CONFIG"
 
 # --- Actualizar colores en global.css ---
 GLOBAL_CSS="src/styles/global.css"

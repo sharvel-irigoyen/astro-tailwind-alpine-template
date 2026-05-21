@@ -178,3 +178,13 @@ const user = await safeFetch('https://api.ejemplo.com/user/1', UserSchema);
 ### 5. Observabilidad con Sentry
 
 La integración de Sentry captura Core Web Vitals y excepciones no controladas. El entrypoint de Alpine registra interceptores globales (`error` y `unhandledrejection`) garantizando visibilidad completa ante incidentes en producción.
+
+### 6. Protección Contra Bots (Cloudflare Turnstile)
+
+El formulario de contacto incluye integración nativa y opcional con **Cloudflare Turnstile**.
+
+- **Token de verificación:** Al resolver el reto, se añade el parámetro `cf-turnstile-response` al formulario. El controlador de Alpine.js extrae este token y lo envía al webhook configurado bajo la propiedad `turnstileToken`.
+- **Validación en Servidor:** Para validar el token en el backend (ej. n8n, Make o servidor propio), realiza una petición POST hacia `https://challenges.cloudflare.com/turnstile/v0/siteverify` enviando:
+  - `secret`: Clave secreta (Secret Key) provista por Cloudflare.
+  - `response`: El valor de `turnstileToken` enviado por el cliente.
+- **Claves de prueba:** Por defecto, el template viene configurado con la Site Key de pruebas `1x00000000000000000000AA`. Esta clave siempre valida con éxito en local sin interactuar.

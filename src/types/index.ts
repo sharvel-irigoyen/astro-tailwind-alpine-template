@@ -53,6 +53,10 @@ export interface SiteConfig {
     linkedin?: string;
     twitter?: string;
   };
+  turnstile?: {
+    enabled: boolean;
+    siteKey: string;
+  };
   navigation: {
     header: { name: string; href: string }[];
     footer: {

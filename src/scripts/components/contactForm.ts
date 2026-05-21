@@ -1,5 +1,12 @@
 import type { Alpine } from 'alpinejs';
 
+interface Turnstile {
+  implicitRender: () => void;
+  reset: (widgetId?: string) => void;
+  remove: (widgetId?: string) => void;
+  getResponse: (widgetId?: string) => string;
+}
+
 export default function (Alpine: Alpine) {
   Alpine.data('contactForm', (webhookUrl?: string, businessName?: string) => ({
     name: '',
@@ -92,6 +99,23 @@ export default function (Alpine: Alpine) {
       this.touched[field] = true;
     },
 
+    get turnstile(): Turnstile | undefined {
+      return (window as typeof window & { turnstile?: Turnstile }).turnstile;
+    },
+
+    init() {
+      // Re-inicialización de Turnstile para soporte con Astro View Transitions
+      setTimeout(() => {
+        if (this.turnstile) {
+          try {
+            this.turnstile.implicitRender();
+          } catch (e) {
+            console.debug('Turnstile implicit render helper', e);
+          }
+        }
+      }, 100);
+    },
+
     resetForm() {
       this.status = 'idle';
       this.name = '';
@@ -101,6 +125,13 @@ export default function (Alpine: Alpine) {
       this.touched.name = false;
       this.touched.email = false;
       this.touched.message = false;
+      if (this.turnstile) {
+        try {
+          this.turnstile.reset();
+        } catch (e) {
+          console.debug('Turnstile reset helper', e);
+        }
+      }
     },
 
     async handleSubmit() {
@@ -117,6 +148,22 @@ export default function (Alpine: Alpine) {
           document.getElementById('message')?.focus();
         }
         return;
+      }
+
+      // Validar token de Turnstile si el widget está en el DOM
+      let turnstileToken = '';
+      const turnstileResponseInput = document.querySelector(
+        '[name="cf-turnstile-response"]',
+      ) as HTMLInputElement | null;
+
+      if (turnstileResponseInput) {
+        turnstileToken = turnstileResponseInput.value;
+        if (!turnstileToken) {
+          this.status = 'error';
+          this.errorMessage =
+            'Por favor, completa la verificación de seguridad (Turnstile).';
+          return;
+        }
       }
 
       this.status = 'submitting';
@@ -137,6 +184,7 @@ export default function (Alpine: Alpine) {
               email: this.email,
               phone: this.phone,
               message: this.message,
+              turnstileToken: turnstileToken,
               timestamp: new Date().toISOString(),
             }),
           },
@@ -154,6 +202,15 @@ export default function (Alpine: Alpine) {
           error instanceof Error
             ? error.message
             : 'No se pudo enviar el mensaje. Intente de nuevo más tarde.';
+
+        // Resetear Turnstile ante un error del backend para poder reintentar
+        if (this.turnstile) {
+          try {
+            this.turnstile.reset();
+          } catch (e) {
+            console.debug('Turnstile error reset helper', e);
+          }
+        }
       }
     },
   }));

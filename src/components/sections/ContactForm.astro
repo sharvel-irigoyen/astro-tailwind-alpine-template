@@ -5,6 +5,17 @@ import { PUBLIC_N8N_WEBHOOK_URL } from 'astro:env/client';
 const webhookUrl = PUBLIC_N8N_WEBHOOK_URL || '';
 ---
 
+{
+  siteConfig.turnstile?.enabled && (
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+      async
+      defer
+      is:inline
+    />
+  )
+}
+
 <div
   x-data={`contactForm('${webhookUrl}', '${siteConfig.name}')`}
   class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-8 shadow-lg dark:border-slate-800 dark:bg-slate-900"
@@ -149,6 +160,16 @@ const webhookUrl = PUBLIC_N8N_WEBHOOK_URL || '';
       >
       </p>
     </div>
+
+    {
+      siteConfig.turnstile?.enabled && (
+        <div
+          class="cf-turnstile mt-2"
+          data-sitekey={siteConfig.turnstile.siteKey}
+        />
+      )
+    }
+
     <button
       type="submit"
       x-bind:disabled="isSubmitDisabled"

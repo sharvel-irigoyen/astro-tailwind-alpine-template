@@ -30,6 +30,10 @@ export const siteConfig: SiteConfig = {
     linkedin: 'https://linkedin.com/company/qonpania',
     twitter: 'https://twitter.com/qonpania',
   },
+  turnstile: {
+    enabled: true,
+    siteKey: '1x00000000000000000000AA', // Siempre pasa (Cloudflare Test Key)
+  },
   navigation: {
     header: [
       { name: 'Inicio', href: '/' },
