@@ -188,3 +188,20 @@ El formulario de contacto incluye integración nativa y opcional con **Cloudflar
   - `secret`: Clave secreta (Secret Key) provista por Cloudflare.
   - `response`: El valor de `turnstileToken` enviado por el cliente.
 - **Claves de prueba:** Por defecto, el template viene configurado con la Site Key de pruebas `1x00000000000000000000AA`. Esta clave siempre valida con éxito en local sin interactuar.
+
+### 7. Despliegue en Cloudflare Pages
+
+El proyecto está optimizado para funcionar tanto en contenedores autogestionados (Docker/Nginx) como en plataformas Edge Serverless de forma transparente.
+
+#### Configuración en la consola de Cloudflare:
+
+1. Conecta tu repositorio Git a Cloudflare Pages.
+2. Selecciona la plantilla de proyecto **Astro**.
+3. Asegúrate de configurar los siguientes parámetros de compilación:
+   - **Comando de construcción:** `pnpm build`
+   - **Directorio de salida:** `dist`
+4. Añade tus variables de entorno en la pestaña de configuración del proyecto en el dashboard de Cloudflare (ej. `PUBLIC_N8N_WEBHOOK_URL`).
+
+#### Cabeceras de Seguridad (CSP / HSTS)
+
+Para mantener los altos estándares de seguridad del proyecto sin depender de un servidor Nginx, se incluye el archivo `public/_headers`. Cloudflare Pages detectará este archivo automáticamente al construir el proyecto y aplicará las cabeceras HTTP de seguridad (CSP, HSTS, X-Frame-Options, etc.) de manera perimetral en cada respuesta.
