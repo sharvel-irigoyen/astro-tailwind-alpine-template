@@ -1,4 +1,10 @@
 import type { SiteConfig } from '../types';
+import {
+  PUBLIC_TURNSTILE_SITE_KEY,
+  PUBLIC_UMAMI_WEBSITE_ID,
+  PUBLIC_UMAMI_SCRIPT_URL,
+  PUBLIC_CLARITY_PROJECT_ID,
+} from 'astro:env/client';
 
 export const siteConfig: SiteConfig = {
   name: 'Qonpania Solutions',
@@ -32,7 +38,19 @@ export const siteConfig: SiteConfig = {
   },
   turnstile: {
     enabled: true,
-    siteKey: '1x00000000000000000000AA', // Siempre pasa (Cloudflare Test Key)
+    siteKey: PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA', // Siempre pasa (Cloudflare Test Key)
+  },
+  analytics: {
+    umami: {
+      enabled: !!PUBLIC_UMAMI_WEBSITE_ID,
+      websiteId: PUBLIC_UMAMI_WEBSITE_ID || '',
+      src:
+        PUBLIC_UMAMI_SCRIPT_URL || 'https://analiticas.midominio.com/script.js',
+    },
+    clarity: {
+      enabled: !!PUBLIC_CLARITY_PROJECT_ID,
+      projectId: PUBLIC_CLARITY_PROJECT_ID || '',
+    },
   },
   navigation: {
     header: [

@@ -205,3 +205,12 @@ El proyecto está optimizado para funcionar tanto en contenedores autogestionado
 #### Cabeceras de Seguridad (CSP / HSTS)
 
 Para mantener los altos estándares de seguridad del proyecto sin depender de un servidor Nginx, se incluye el archivo `public/_headers`. Cloudflare Pages detectará este archivo automáticamente al construir el proyecto y aplicará las cabeceras HTTP de seguridad (CSP, HSTS, X-Frame-Options, etc.) de manera perimetral en cada respuesta.
+
+### 8. Analíticas y Rastreo (Umami & Microsoft Clarity)
+
+El proyecto incluye soporte nativo y modular para herramientas de analítica modernas centradas en la privacidad y la experiencia de usuario (UX), sin afectar el rendimiento del sitio (100/100 en Lighthouse).
+
+- **Microsoft Clarity:** Integrado de forma asíncrona para proveer mapas de calor (heatmaps) y grabaciones de sesiones sin costo.
+- **Umami Analytics:** Alternativa _Privacy-First_ a Google Analytics. Al activarlo, el script `setup.sh` inyectará automáticamente el dominio de tu servidor Umami en las reglas estrictas de seguridad perimetral (Content-Security-Policy) de Nginx y Cloudflare Pages para permitir su ejecución sin comprometer la seguridad del sitio.
+
+Para configurar estas herramientas, puedes usar el CLI interactivo (`./setup.sh`) o editar manualmente el bloque `analytics` en `src/config/site.ts`.

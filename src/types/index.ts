@@ -57,6 +57,17 @@ export interface SiteConfig {
     enabled: boolean;
     siteKey: string;
   };
+  analytics?: {
+    umami?: {
+      enabled: boolean;
+      websiteId: string;
+      src: string;
+    };
+    clarity?: {
+      enabled: boolean;
+      projectId: string;
+    };
+  };
   navigation: {
     header: { name: string; href: string }[];
     footer: {

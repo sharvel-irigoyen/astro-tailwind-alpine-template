@@ -43,6 +43,29 @@ if [[ "$ENABLE_TURNSTILE" =~ ^[Ss]$ ]]; then
 fi
 
 echo ""
+echo -e "${YELLOW}📊 Analíticas y Rastreo${NC}"
+read -rp "   ¿Habilitar Umami Analytics? (s/n): " ENABLE_UMAMI
+UMAMI_ENABLED="false"
+UMAMI_ID=""
+UMAMI_SRC="https://analiticas.midominio.com/script.js"
+if [[ "$ENABLE_UMAMI" =~ ^[Ss]$ ]]; then
+  UMAMI_ENABLED="true"
+  read -rp "   Website ID de Umami: " UMAMI_ID
+  read -rp "   URL del script de Umami (ej: https://analiticas.midominio.com/script.js): " UMAMI_SRC_INPUT
+  if [ -n "$UMAMI_SRC_INPUT" ]; then
+    UMAMI_SRC="$UMAMI_SRC_INPUT"
+  fi
+fi
+
+read -rp "   ¿Habilitar Microsoft Clarity? (s/n): " ENABLE_CLARITY
+CLARITY_ENABLED="false"
+CLARITY_ID=""
+if [[ "$ENABLE_CLARITY" =~ ^[Ss]$ ]]; then
+  CLARITY_ENABLED="true"
+  read -rp "   Project ID de Clarity: " CLARITY_ID
+fi
+
+echo ""
 echo -e "${YELLOW}🎨 Personalización${NC}"
 read -rp "   Color primario HEX (ej: #2563eb): " PRIMARY_COLOR
 read -rp "   Color primario hover HEX (ej: #1d4ed8): " PRIMARY_HOVER
@@ -64,8 +87,19 @@ PHONE_ESC=$(escape_sed "$PHONE")
 ADDRESS_ESC=$(escape_sed "$ADDRESS")
 WHATSAPP_ESC=$(escape_sed "$WHATSAPP")
 TURNSTILE_KEY_ESC=$(escape_sed "$TURNSTILE_KEY")
+UMAMI_ID_ESC=$(escape_sed "$UMAMI_ID")
+UMAMI_SRC_ESC=$(escape_sed "$UMAMI_SRC")
+CLARITY_ID_ESC=$(escape_sed "$CLARITY_ID")
 PRIMARY_ESC=$(escape_sed "$PRIMARY_COLOR")
 PRIMARY_HOVER_ESC=$(escape_sed "$PRIMARY_HOVER")
+
+# Extraer el host de la URL de Umami para el CSP (ej: de https://umami.com/script.js saca https://umami.com)
+if [[ "$UMAMI_SRC" =~ ^(https?://[^/]+) ]]; then
+  UMAMI_HOST_EXTRACTED="${BASH_REMATCH[1]}"
+else
+  UMAMI_HOST_EXTRACTED=""
+fi
+UMAMI_HOST_ESC=$(escape_sed "$UMAMI_HOST_EXTRACTED")
 
 echo -e "${BLUE}⚙️  Aplicando configuración...${NC}"
 
@@ -78,8 +112,29 @@ sed -i "s/    email: '.*'/    email: '${EMAIL_ESC}'/" "$SITE_CONFIG"
 sed -i "s/    phone: '.*'/    phone: '${PHONE_ESC}'/" "$SITE_CONFIG"
 sed -i "s/    address: '.*'/    address: '${ADDRESS_ESC}'/" "$SITE_CONFIG"
 sed -i "s/    whatsapp: '.*'/    whatsapp: '${WHATSAPP_ESC}'/" "$SITE_CONFIG"
-sed -i "s/    enabled: .*/    enabled: ${TURNSTILE_ENABLED},/" "$SITE_CONFIG"
-sed -i "s/    siteKey: '.*'/    siteKey: '${TURNSTILE_KEY_ESC}'/" "$SITE_CONFIG"
+sed -i "/turnstile: {/,/},/ s/    enabled: .*/    enabled: ${TURNSTILE_ENABLED},/" "$SITE_CONFIG"
+sed -i "/turnstile: {/,/},/ s/    siteKey: '.*'/    siteKey: '${TURNSTILE_KEY_ESC}'/" "$SITE_CONFIG"
+
+sed -i "/umami: {/,/},/ s/      enabled: .*/      enabled: ${UMAMI_ENABLED},/" "$SITE_CONFIG"
+sed -i "/umami: {/,/},/ s/      websiteId: .*/      websiteId: '${UMAMI_ID_ESC}',/" "$SITE_CONFIG"
+sed -i "/umami: {/,/},/ s|      src: .*|      src: '${UMAMI_SRC_ESC}',|" "$SITE_CONFIG"
+
+sed -i "/clarity: {/,/},/ s/      enabled: .*/      enabled: ${CLARITY_ENABLED},/" "$SITE_CONFIG"
+sed -i "/clarity: {/,/},/ s/      projectId: .*/      projectId: '${CLARITY_ID_ESC}',/" "$SITE_CONFIG"
+
+# --- Actualizar CSP (Content-Security-Policy) en Nginx y Cloudflare Pages ---
+NGINX_CONF="nginx/nginx.conf"
+HEADERS_FILE="public/_headers"
+if [ "$UMAMI_ENABLED" = "true" ] && [ -n "$UMAMI_HOST_ESC" ]; then
+  sed -i "s/__UMAMI_HOST__/${UMAMI_HOST_ESC}/g" "$NGINX_CONF"
+  sed -i "s/__UMAMI_HOST__/${UMAMI_HOST_ESC}/g" "$HEADERS_FILE"
+else
+  # Si no se habilita Umami, removemos el placeholder
+  sed -i "s/ __UMAMI_HOST__//g" "$NGINX_CONF"
+  sed -i "s/__UMAMI_HOST__//g" "$NGINX_CONF"
+  sed -i "s/ __UMAMI_HOST__//g" "$HEADERS_FILE"
+  sed -i "s/__UMAMI_HOST__//g" "$HEADERS_FILE"
+fi
 
 # --- Actualizar colores en global.css ---
 GLOBAL_CSS="src/styles/global.css"

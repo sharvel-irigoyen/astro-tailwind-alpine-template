@@ -53,6 +53,28 @@ export default defineConfig({
         optional: true,
         default: 'https://n8n.example.com/webhook/contact',
       }),
+      PUBLIC_TURNSTILE_SITE_KEY: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+        default: '1x00000000000000000000AA',
+      }),
+      PUBLIC_UMAMI_WEBSITE_ID: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+      }),
+      PUBLIC_UMAMI_SCRIPT_URL: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+        default: 'https://analiticas.midominio.com/script.js',
+      }),
+      PUBLIC_CLARITY_PROJECT_ID: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+      }),
     },
   },
 });

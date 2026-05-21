@@ -5,4 +5,4 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-XSS-Protection: 1; mode=block
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com https://*.ingest.sentry.io https://*.ingest.de.sentry.io; frame-src 'self' https://challenges.cloudflare.com; worker-src 'self' blob:;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.clarity.ms https://*.clarity.ms __UMAMI_HOST__; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://*.clarity.ms; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://www.clarity.ms https://*.clarity.ms __UMAMI_HOST__; frame-src 'self' https://challenges.cloudflare.com; worker-src 'self' blob:;
